@@ -45,64 +45,61 @@ The code for this step is contained in the first code cell of the IPython notebo
 
 First I grab all the object points and image points from the provided chessboard images using `findChessboardCorners` from cv2. With object and image points, I can use `calibrateCamera` & `undistort` function to get the camera matrix and undistorted image.
 
-![alt text]()
+![alt text](https://goo.gl/zfkLPQ)
 
 ### Pipeline (single images)
 
 #### 1. Provide an example of a distortion-corrected image.
 
 To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
-![alt text][image2]
-
+![alt text](https://goo.gl/zfkLPQ)
+I used the object points and image points to calibrate the camera matrix and distance to undistort the test images
 #### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 
-I used a combination of color and gradient thresholds to generate a binary image (thresholding steps at lines # through # in `another_file.py`).  Here's an example of my output for this step.  (note: this is not actually from one of the test images)
-
-![alt text][image3]
+I used a combination of color and gradient thresholds to generate a binary image (thresholding steps at lines # through # in `util.py`).  Here's an example of my output for this step.  
+![alt text](https://goo.gl/MSmkPN)
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
-The code for my perspective transform includes a function called `warper()`, which appears in lines 1 through 8 in the file `example.py` (output_images/examples/example.py) (or, for example, in the 3rd code cell of the IPython notebook).  The `warper()` function takes as inputs an image (`img`), as well as source (`src`) and destination (`dst`) points.  I chose the hardcode the source and destination points in the following manner:
+The code for my perspective transform includes a function called `warp(img)`, which appears in lines 71 through 95 in the file `util.py`.  The `warp(img)` function takes as inputs an image (`img`), as well as source (`src`) and destination (`dst`) points.  I chose the hardcode the source and destination points in the following manner:
 
 ```python
-src = np.float32(
-    [[(img_size[0] / 2) - 55, img_size[1] / 2 + 100],
-    [((img_size[0] / 6) - 10), img_size[1]],
-    [(img_size[0] * 5 / 6) + 60, img_size[1]],
-    [(img_size[0] / 2 + 55), img_size[1] / 2 + 100]])
-dst = np.float32(
-    [[(img_size[0] / 4), 0],
-    [(img_size[0] / 4), img_size[1]],
-    [(img_size[0] * 3 / 4), img_size[1]],
-    [(img_size[0] * 3 / 4), 0]])
+src = np.float32([[585,461],
+                  [200,717],
+                  [1088,704],
+                  [708,459]])
+dst = np.float32([[320,0],
+                  [320,720],
+                  [980,720],
+                  [980,0]])
 ```
 
 This resulted in the following source and destination points:
 
 | Source        | Destination   | 
 |:-------------:|:-------------:| 
-| 585, 460      | 320, 0        | 
-| 203, 720      | 320, 720      |
-| 1127, 720     | 960, 720      |
-| 695, 460      | 960, 0        |
+| 585, 461      | 320, 0        | 
+| 200, 717      | 320, 720      |
+| 1088, 704     | 980, 720      |
+| 708, 459      | 980, 0        |
 
 I verified that my perspective transform was working as expected by drawing the `src` and `dst` points onto a test image and its warped counterpart to verify that the lines appear parallel in the warped image.
 
-![alt text][image4]
+![alt text](https://goo.gl/Yg5NFV)
 
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
-Then I did some other stuff and fit my lane lines with a 2nd order polynomial kinda like this:
+The code for my identified lane-line pixels and fit their positions with a polynomial include a function called `find_lane_pixels(binary_warped)`, which appears in lines 110 through 184 and `fit_polynomial(binary_warped)`, which appears in lines 187 through 232 in the file `util.py`. In short, it divided the images into many layers and calculate the histogram. With the histogram, we can get the highest value which indicated the lane position for each layer. After combining all the points, we can draw the line using the polyline function. 
 
 ![alt text][image5]
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
-I did this in lines # through # in my code in `my_other_file.py`
+I did this in lines 97 through 109 in my code in `util.py`. It uses the data from the funtion `find_lane_pixels` and calculate the radius formula.
 
 #### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
-I implemented this step in lines # through # in my code in `yet_another_file.py` in the function `map_lane()`.  Here is an example of my result on a test image:
+I implemented this step in my code in block 29 in jupyter notebook file.  Here is an example of my result on a test image:
 
 ![alt text][image6]
 
@@ -119,5 +116,6 @@ Here's a [link to my video result](./project_video.mp4)
 ### Discussion
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
+When I am processing the video, it really takes too much time since I did not use the `Search from Prior method`. Also, I apply my threshold on many different test_images and not all of the noises can be filtered out or the outputs are ideal. I think I need to spend more time on tweaking the parameters or even try more methods such as HSV or RGB to make it more robust.
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+
