@@ -91,7 +91,7 @@ I verified that my perspective transform was working as expected by drawing the 
 
 The code for my identified lane-line pixels and fit their positions with a polynomial include a function called `find_lane_pixels(binary_warped)`, which appears in lines 110 through 184 and `fit_polynomial(binary_warped)`, which appears in lines 187 through 232 in the file `util.py`. In short, it divided the images into many layers and calculate the histogram. With the histogram, we can get the highest value which indicated the lane position for each layer. After combining all the points, we can draw the line using the polyline function. 
 
-![alt text][image5]
+![alt text](https://goo.gl/xyqDUP)
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
@@ -101,7 +101,7 @@ I did this in lines 97 through 109 in my code in `util.py`. It uses the data fro
 
 I implemented this step in my code in block 29 in jupyter notebook file.  Here is an example of my result on a test image:
 
-![alt text][image6]
+![alt text](https://goo.gl/X6EfRU)
 
 ---
 
@@ -109,7 +109,7 @@ I implemented this step in my code in block 29 in jupyter notebook file.  Here i
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
 
-Here's a [link to my video result](./project_video.mp4)
+Here's a [link to my video result](https://youtu.be/toQ99iWcBC0)
 
 ---
 
